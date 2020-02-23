@@ -8,7 +8,7 @@ services:
     links:
       - sql
     ports:
-      - "8080:8080"
+      - '8080:8080'
     depends_on:
       - sql
     environment:
@@ -17,10 +17,10 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     network_mode: bridge
     ports:
-        - "1433:1433"
+        - '1433:1433'
     environment:
-        ACCEPT_EULA: "Y"
-        SA_PASSWORD: "Secret!Secret"
+        ACCEPT_EULA: 'Y'
+        SA_PASSWORD: 'Secret!Secret'
     volumes:
       - sql_data:/var/lib/sql
 
