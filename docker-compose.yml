@@ -1,6 +1,15 @@
 version: '3'
 
-services:    
+services:
+  api:
+    build: ./company-api
+    restart: on-failure
+    links:
+      - sql
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sql
   sql:
     image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
