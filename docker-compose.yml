@@ -1,8 +1,9 @@
-version: '3'
+version: '3.7'
 
 services:
   api:
     build: ./company-api
+    network_mode: bridge
     restart: on-failure
     links:
       - sql
@@ -14,6 +15,7 @@ services:
       PORT: 1433
   sql:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    network_mode: bridge
     ports:
         - "1433:1433"
     environment:
@@ -21,11 +23,6 @@ services:
         SA_PASSWORD: "Secret!Secret"
     volumes:
       - sql_data:/var/lib/sql
-
-networks:
-  default:
-    external:
-      name: bridge
 
 volumes:
     sql_data:

@@ -184,7 +184,7 @@ func main() {
 
 	router.Use(LoggingMiddleware)
 	log.Println("Server now listening at :8080")
-	//repository.ConnectToDb()
+	repository.ConnectToDb()
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
