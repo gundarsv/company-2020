@@ -6,11 +6,12 @@ import (
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/gundarsv/company-2020/company-api/controller"
 	"github.com/gundarsv/company-2020/company-api/model"
+	"os"
 )
 
 var (
 	server   = "localhost"
-	port     = 1433
+	port     = os.Getenv("PORT")
 	user     = "sa"
 	password = "Secret!Secret"
 	database = "companyDB"
@@ -103,7 +104,7 @@ func GetOwnerByID(ownerID int) *model.Owner {
 }
 
 func ConnectToDb() {
-	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;",
+	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%s;database=%s;",
 		server, user, password, port, database)
 	conn, err := sql.Open("mssql", connString)
 

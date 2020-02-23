@@ -10,6 +10,8 @@ services:
       - "8080:8080"
     depends_on:
       - sql
+    environment:
+      PORT: 1433
   sql:
     image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
