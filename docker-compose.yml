@@ -6,23 +6,24 @@ services:
     network_mode: bridge
     restart: on-failure
     links:
-      - sql
+      - postgres
     ports:
       - '8080:8080'
     depends_on:
-      - sql
+      - postgres
     environment:
-      SQL_PORT: 1433
-  sql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+      SQL_PORT: 5432
+  postgres:
     network_mode: bridge
+    container_name: postgres
+    restart: always
+    image: postgres:latest
     ports:
-        - '1433:1433'
+      - 5432:5432
     environment:
-        ACCEPT_EULA: 'Y'
-        SA_PASSWORD: 'Secret!Secret'
+      POSTGRES_PASSWORD: 'password'
     volumes:
-      - sql_data:/var/lib/sql
+      - ./postgres-data:/var/lib/postgresql
 
 volumes:
-    sql_data:
+  postgres-data:

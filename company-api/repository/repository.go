@@ -3,18 +3,18 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/gundarsv/company-2020/company-api/controller"
 	"github.com/gundarsv/company-2020/company-api/model"
+	_ "github.com/lib/pq"
 	"os"
 )
 
 var (
-	server   = "localhost"
+	host     = "localhost"
 	port     = os.Getenv("SQL_PORT")
-	user     = "sa"
-	password = "Secret!Secret"
-	database = "companyDB"
+	user     = "postgres"
+	password = "password"
+	dbname   = "companyDB"
 )
 
 var databaseConnection *sql.DB
@@ -104,20 +104,20 @@ func GetOwnerByID(ownerID int) *model.Owner {
 }
 
 func ConnectToDb() {
-	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%s;database=%s;",
-		server, user, password, port, database)
-	conn, err := sql.Open("mssql", connString)
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
 
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		controller.HandleDatabaseError(err)
+	}
+	defer db.Close()
+
+	err = db.Ping()
 	if err != nil {
 		controller.HandleDatabaseError(err)
 	}
 
-	stmt, err := conn.Prepare("select 1, 'abc'")
-
-	if err != nil {
-		controller.HandleDatabaseError(err)
-	}
-	defer stmt.Close()
-
-	databaseConnection = conn
+	databaseConnection = db
 }
