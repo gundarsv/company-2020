@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
+	"github.com/gundarsv/company-2020/company-api/controller"
 	"github.com/gundarsv/company-2020/company-api/handler"
 	"github.com/gundarsv/company-2020/company-api/helpers"
 	"github.com/gundarsv/company-2020/company-api/model"
@@ -38,14 +39,14 @@ func getCompanyByID(w http.ResponseWriter, r *http.Request) {
 	companyId, err := strconv.Atoi(mux.Vars(r)["id"])
 
 	if err != nil {
-		handler.HandleUserError(w, "Error", 400, err)
+		controller.HandleUserError(w, "Error", 400, err)
 		return
 	}
 
 	company := repository.GetCompanyByID(companyId)
 
 	if company == nil {
-		handler.HandleUserError(w, "Company was not found", 404, errors.New("no company found"))
+		controller.HandleUserError(w, "Company was not found", 404, errors.New("no company found"))
 		return
 	}
 
