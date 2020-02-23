@@ -5,7 +5,6 @@ import (
 	"errors"
 	"github.com/gorilla/mux"
 	"github.com/gundarsv/company-2020/company-api/controller"
-	"github.com/gundarsv/company-2020/company-api/handler"
 	"github.com/gundarsv/company-2020/company-api/helpers"
 	"github.com/gundarsv/company-2020/company-api/model"
 	"github.com/gundarsv/company-2020/company-api/repository"
@@ -58,14 +57,14 @@ func getOwnerByID(w http.ResponseWriter, r *http.Request) {
 	ownerId, err := strconv.Atoi(mux.Vars(r)["id"])
 
 	if err != nil {
-		handler.HandleUserError(w, "Error", 400, err)
+		controller.HandleUserError(w, "Error", 400, err)
 		return
 	}
 
 	owner := repository.GetOwnerByID(ownerId)
 
 	if owner == nil {
-		handler.HandleUserError(w, "Company was not found", 404, errors.New("no company found"))
+		controller.HandleUserError(w, "Company was not found", 404, errors.New("no company found"))
 		return
 	}
 
@@ -78,7 +77,7 @@ func createCompany(w http.ResponseWriter, r *http.Request) {
 	reqBody, readErrors := ioutil.ReadAll(r.Body)
 
 	if readErrors != nil {
-		handler.HandleUserError(w, "Error", 400, readErrors)
+		controller.HandleUserError(w, "Error", 400, readErrors)
 		return
 	}
 
@@ -87,12 +86,12 @@ func createCompany(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, &newCompany)
 
 	if validationErrors := validate.Struct(newCompany); validationErrors != nil {
-		handler.HandleUserError(w, "Error", 422, validationErrors)
+		controller.HandleUserError(w, "Error", 422, validationErrors)
 		return
 	}
 
 	if newCompany.Owners != nil {
-		handler.HandleUserError(w, "Please remove owners", 422, errors.New("owners were added to company"))
+		controller.HandleUserError(w, "Please remove owners", 422, errors.New("owners were added to company"))
 		return
 	}
 
@@ -108,28 +107,28 @@ func addOwnerToCompany(w http.ResponseWriter, r *http.Request) {
 	companyId, err := strconv.Atoi(mux.Vars(r)["companyId"])
 
 	if err != nil {
-		handler.HandleUserError(w, "Error", 400, err)
+		controller.HandleUserError(w, "Error", 400, err)
 		return
 	}
 
 	company := helpers.GetCompanyById(companyId, &companies)
 
 	if company == nil {
-		handler.HandleUserError(w, "Company was not found", 404, errors.New("no company found"))
+		controller.HandleUserError(w, "Company was not found", 404, errors.New("no company found"))
 		return
 	}
 
 	ownerId, err := strconv.Atoi(mux.Vars(r)["companyId"])
 
 	if err != nil {
-		handler.HandleUserError(w, "Error", 400, err)
+		controller.HandleUserError(w, "Error", 400, err)
 		return
 	}
 
 	owner := helpers.GetOwnerById(ownerId, &owners)
 
 	if owner == nil {
-		handler.HandleUserError(w, "Owner was not found", 404, errors.New("no owner found"))
+		controller.HandleUserError(w, "Owner was not found", 404, errors.New("no owner found"))
 		return
 	}
 
@@ -168,8 +167,6 @@ func addOwnerToCompany(w http.ResponseWriter, r *http.Request) {
 //
 //	json.NewEncoder(w).Encode(Helper.UpdateCompany(company, &updatedCompany))
 //}
-
-
 
 func main() {
 	validate = validator.New()
