@@ -10,7 +10,7 @@ import (
 
 var (
 	server   = "localhost"
-	port     = 1434
+	port     = 1433
 	user     = "sa"
 	password = "Secret!Secret"
 	database = "companyDB"
