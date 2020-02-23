@@ -22,5 +22,10 @@ services:
     volumes:
       - sql_data:/var/lib/sql
 
+networks:
+  default:
+    external:
+      name: bridge
+
 volumes:
     sql_data:
