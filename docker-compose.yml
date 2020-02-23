@@ -15,7 +15,6 @@ services:
       SQL_PORT: 5432
   postgres:
     network_mode: bridge
-    container_name: postgres
     restart: always
     image: postgres:latest
     ports:
