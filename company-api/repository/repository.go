@@ -6,6 +6,7 @@ import (
 	"github.com/gundarsv/company-2020/company-api/controller"
 	"github.com/gundarsv/company-2020/company-api/model"
 	_ "github.com/lib/pq"
+	"log"
 	"os"
 )
 
@@ -108,6 +109,7 @@ func ConnectToDb() {
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
+	log.Println(psqlInfo)
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		controller.HandleDatabaseError(err)
@@ -119,5 +121,6 @@ func ConnectToDb() {
 		controller.HandleDatabaseError(err)
 	}
 
+	log.Println(db)
 	databaseConnection = db
 }
