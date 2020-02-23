@@ -11,7 +11,7 @@ import (
 
 var (
 	server   = "localhost"
-	port     = os.Getenv("PORT")
+	port     = os.Getenv("SQL_PORT")
 	user     = "sa"
 	password = "Secret!Secret"
 	database = "companyDB"
