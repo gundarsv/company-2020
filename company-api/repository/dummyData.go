@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"../model"
+	"github.com/gundarsv/company-2020/company-api/model"
 	"log"
 )
 

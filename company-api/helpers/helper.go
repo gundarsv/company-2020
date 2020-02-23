@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"../model"
+	"github.com/gundarsv/company-2020/company-api/model"
 )
 
 func GetCompanyById(companyID int, companies *[]model.Company) *model.Company {
