@@ -12,6 +12,7 @@ services:
     depends_on:
       - postgres
     environment:
+      HOST_ADDRESS: "localhost"
       SQL_PORT: 5432
   postgres:
     network_mode: bridge

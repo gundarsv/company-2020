@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	host     = "localhost"
+	host     = os.Getenv("HOST_ADDRESS")
 	port     = os.Getenv("SQL_PORT")
 	user     = "postgres"
 	password = "password"
