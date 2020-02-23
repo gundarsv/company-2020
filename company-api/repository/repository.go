@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	server   = "localhost"
-	port     = os.Getenv("SQL_PORT")
+	server   = os.Getenv("DATABASE_IP")
+	port     = os.Getenv("DATABASE_PORT")
 	user     = "sa"
 	password = "Secret!Secret"
 	database = "companyDB"

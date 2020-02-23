@@ -12,7 +12,8 @@ services:
     depends_on:
       - sql
     environment:
-      SQL_PORT: 1433
+      DATABASE_PORT: 1433
+      DATABASE_IP: "localhost"
   sql:
     image: mcr.microsoft.com/mssql/server:2019-latest
     network_mode: bridge
