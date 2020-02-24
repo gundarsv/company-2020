@@ -11,10 +11,6 @@ type Company struct {
 	Owners      []Owner `json:"Owners"`
 }
 
-func NewCompany(ID int, Name string, Address string, City string, Country string, Email string, PhoneNumber string) *Company {
-	return &Company{ID, Name, Address, City, Country, Email, PhoneNumber, nil}
-}
-
 func (c *Company) AddOwner(owner Owner) {
 	c.Owners = append(c.Owners, owner)
 }

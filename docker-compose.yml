@@ -1,22 +1,23 @@
 version: '3.7'
 
 services:
-  api:
-    build: ./company-api
-    network_mode: bridge
-    restart: on-failure
-    links:
-      - sql
-    ports:
-      - '8080:8080'
-    depends_on:
-      - sql
-    environment:
-      DATABASE_PORT: 1433
-      DATABASE_IP: "localhost"
+#  api:
+#    build: ./company-api
+#    network_mode: bridge
+#    restart: on-failure
+#    links:
+#      - sql
+#    ports:
+#      - '8080:8080'
+#    depends_on:
+#      - sql
+#    environment:
+#      DATABASE_PORT: 1433
+#      DATABASE_IP: "172.17.0.2"
   sql:
     image: mcr.microsoft.com/mssql/server:2019-latest
     network_mode: bridge
+    restart: on-failure
     ports:
         - '1433:1433'
     environment:

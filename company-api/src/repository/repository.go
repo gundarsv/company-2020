@@ -1,29 +1,28 @@
 package repository
 
 import (
+	"company-api/src/helper"
+	"company-api/src/model"
 	"database/sql"
 	"fmt"
 	_ "github.com/denisenkom/go-mssqldb"
-	"github.com/gundarsv/company-2020/company-api/controller"
-	"github.com/gundarsv/company-2020/company-api/model"
 	"os"
 )
 
 var (
-	server   = os.Getenv("DATABASE_IP")
-	port     = os.Getenv("DATABASE_PORT")
-	user     = "sa"
-	password = "Secret!Secret"
-	database = "companyDB"
+	server             = os.Getenv("DATABASE_IP")
+	port               = os.Getenv("DATABASE_PORT")
+	user               = "sa"
+	password           = "Secret!Secret"
+	database           = "companyDB"
+	databaseConnection *sql.DB
 )
-
-var databaseConnection *sql.DB
 
 func GetAllOwners() []*model.Owner {
 	rows, err := databaseConnection.Query("SELECT ID, FirstName, LastName, Address FROM dbo.owner;")
 
 	if err != nil {
-		controller.HandleDatabaseError(err)
+		helper.HandleDatabaseError(err)
 	}
 	defer rows.Close()
 
@@ -34,7 +33,7 @@ func GetAllOwners() []*model.Owner {
 		err := rows.Scan(&o.ID, &o.FirstName, &o.LastName, &o.Address)
 
 		if err != nil {
-			controller.HandleDatabaseError(err)
+			helper.HandleDatabaseError(err)
 		}
 
 		owners = append(owners, o)
@@ -47,7 +46,7 @@ func GetAllCompanies() []*model.Company {
 	rows, err := databaseConnection.Query("SELECT ID, Name, Address, City, Country, COALESCE(Email, ''), COALESCE(PhoneNumber, '') FROM dbo.company;")
 
 	if err != nil {
-		controller.HandleDatabaseError(err)
+		helper.HandleDatabaseError(err)
 	}
 	defer rows.Close()
 
@@ -62,7 +61,7 @@ func GetAllCompanies() []*model.Company {
 		}
 
 		if err != nil {
-			controller.HandleDatabaseError(err)
+			helper.HandleDatabaseError(err)
 		}
 
 		companies = append(companies, c)
@@ -80,7 +79,7 @@ func GetCompanyByID(companyID int) *model.Company {
 		if err == sql.ErrNoRows {
 			return nil
 		} else {
-			controller.HandleDatabaseError(err)
+			helper.HandleDatabaseError(err)
 		}
 	}
 
@@ -96,26 +95,26 @@ func GetOwnerByID(ownerID int) *model.Owner {
 		if err == sql.ErrNoRows {
 			return nil
 		} else {
-			controller.HandleDatabaseError(err)
+			helper.HandleDatabaseError(err)
 		}
 	}
 
 	return owner
 }
 
-func ConnectToDb() {
+func InitRepository() {
 	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%s;database=%s;",
 		server, user, password, port, database)
 	conn, err := sql.Open("mssql", connString)
 
 	if err != nil {
-		controller.HandleDatabaseError(err)
+		helper.HandleDatabaseError(err)
 	}
 
 	stmt, err := conn.Prepare("select 1, 'abc'")
 
 	if err != nil {
-		controller.HandleDatabaseError(err)
+		helper.HandleDatabaseError(err)
 	}
 	defer stmt.Close()
 
