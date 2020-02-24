@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   api:
-    build: ./src/company-api
+    build: ./company-api
     network_mode: bridge
     restart: on-failure
     links:

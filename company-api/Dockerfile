@@ -17,14 +17,16 @@ RUN go mod download
 # Copy the code into the container
 COPY . .
 
+WORKDIR src
+
 # Build the application
-RUN go build -o src/application .
+RUN go build -o application .
 
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
 
 # Copy binary from build to main folder
-RUN cp /build/application .
+RUN cp /build/src/application .
 
 # Export necessary port
 EXPOSE 8080
