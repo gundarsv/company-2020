@@ -64,7 +64,7 @@ func GetAllCompanies() []*model.Company {
 			helper.HandleDatabaseError(err)
 		}
 
-		c.Owners = getOwnersInCompany(c)
+		addOwnersToCompany(c)
 
 		companies = append(companies, c)
 	}
@@ -72,7 +72,7 @@ func GetAllCompanies() []*model.Company {
 	return companies
 }
 
-func getOwnersInCompany(company *model.Company) []model.Owner {
+func addOwnersToCompany(company *model.Company) {
 	rows, err := databaseConnection.Query("SELECT * \n"+
 		"FROM companyDB.dbo.owner \n"+
 		"WHERE id IN (SELECT ownerID FROM companyDB.dbo.company_owner WHERE companyID = ?);", company.ID)
@@ -82,25 +82,21 @@ func getOwnersInCompany(company *model.Company) []model.Owner {
 	}
 	defer rows.Close()
 
-	var owners []model.Owner
-
 	for rows.Next() {
 		owner := new(model.Owner)
 
 		err := rows.Scan(&owner.ID, &owner.FirstName, &owner.LastName, &owner.Address)
 
 		if err == sql.ErrNoRows {
-			return nil
+			break
 		}
 
 		if err != nil {
 			helper.HandleDatabaseError(err)
 		}
 
-		owners = append(owners, *owner)
+		company.AddOwner(*owner)
 	}
-
-	return owners
 }
 
 func GetCompanyByID(companyID int) *model.Company {
@@ -116,7 +112,7 @@ func GetCompanyByID(companyID int) *model.Company {
 		}
 	}
 
-	company.Owners = getOwnersInCompany(company)
+	addOwnersToCompany(company)
 
 	return company
 }
