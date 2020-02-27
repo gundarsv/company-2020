@@ -64,24 +64,59 @@ func GetAllCompanies() []*model.Company {
 			helper.HandleDatabaseError(err)
 		}
 
+		c.Owners = getOwnersInCompany(c)
+
 		companies = append(companies, c)
 	}
 
 	return companies
 }
 
+func getOwnersInCompany(company *model.Company) []model.Owner {
+	rows, err := databaseConnection.Query("SELECT * \n"+
+		"FROM companyDB.dbo.owner \n"+
+		"WHERE id IN (SELECT ownerID FROM companyDB.dbo.company_owner WHERE companyID = ?);", company.ID)
+
+	if err != nil {
+		helper.HandleDatabaseError(err)
+	}
+	defer rows.Close()
+
+	var owners []model.Owner
+
+	for rows.Next() {
+		owner := new(model.Owner)
+
+		err := rows.Scan(&owner.ID, &owner.FirstName, &owner.LastName, &owner.Address)
+
+		if err == sql.ErrNoRows {
+			return nil
+		}
+
+		if err != nil {
+			helper.HandleDatabaseError(err)
+		}
+
+		owners = append(owners, *owner)
+	}
+
+	return owners
+}
+
 func GetCompanyByID(companyID int) *model.Company {
-	rows := databaseConnection.QueryRow("SELECT ID, Name, Address, City, Country, COALESCE(Email, ''), COALESCE(PhoneNumber, '') FROM companyDB.dbo.company WHERE ID = ?;", companyID)
+	rowsCompany := databaseConnection.QueryRow("SELECT ID, Name, Address, City, Country, COALESCE(Email, ''), COALESCE(PhoneNumber, '') FROM companyDB.dbo.company WHERE ID = ?;", companyID)
 
 	company := new(model.Company)
 
-	if err := rows.Scan(&company.ID, &company.Name, &company.Address, &company.City, &company.Country, &company.Email, &company.PhoneNumber); err != nil {
+	if err := rowsCompany.Scan(&company.ID, &company.Name, &company.Address, &company.City, &company.Country, &company.Email, &company.PhoneNumber); err != nil {
 		if err == sql.ErrNoRows {
 			return nil
 		} else {
 			helper.HandleDatabaseError(err)
 		}
 	}
+
+	company.Owners = getOwnersInCompany(company)
 
 	return company
 }
@@ -189,7 +224,7 @@ func createDatabase() {
 }
 
 func checkIfDatabaseExists() {
-	row := databaseConnection.QueryRow("SELECT COUNT(name) FROM master.dbo.sysdatabases WHERE name = 'companyDB'")
+	row := databaseConnection.QueryRow("SELECT COUNT(name) FROM master.dbo.sysdatabases WHERE name = ?;", "companyDB")
 
 	exists := false
 	if err := row.Scan(&exists); err != nil {
