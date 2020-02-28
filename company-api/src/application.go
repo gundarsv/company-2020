@@ -19,5 +19,5 @@ func main() {
 
 	log.Println("Server now listening at :8080")
 	repository.InitRepository()
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":8080", helper.RemoveTrailingSlash(router)))
 }

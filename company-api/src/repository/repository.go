@@ -7,7 +7,9 @@ import (
 	"fmt"
 	_ "github.com/denisenkom/go-mssqldb"
 	"log"
+	"net/http"
 	"os"
+	"strings"
 )
 
 var (
@@ -97,6 +99,46 @@ func addOwnersToCompany(company *model.Company) {
 
 		company.AddOwner(*owner)
 	}
+}
+
+func CreateCompany(company model.Company) *model.Company {
+	rows := databaseConnection.QueryRow("INSERT INTO [companyDB].[dbo].[company]([Name],[Address],[Country],[City],[Email],[PhoneNumber]) VALUES (?, ?, ?, ?, ?, ?); select ID = convert(bigint, SCOPE_IDENTITY());",
+		&company.Name, &company.Address, &company.Country, &company.City, &company.Email, &company.PhoneNumber)
+
+	id := new(int)
+
+	err := rows.Scan(&id)
+
+	if err != nil {
+		helper.HandleDatabaseError(err)
+	}
+
+	return GetCompanyByID(*id)
+}
+
+func AddOwnerToCompany(companyID int, ownerID int, w http.ResponseWriter) *model.Company {
+	_, err := databaseConnection.Exec("INSERT INTO [companyDB].[dbo].[company_owner]([CompanyID],[OwnerID]) VALUES (?, ?);", companyID, ownerID)
+
+	if err != nil {
+		if strings.Contains(err.Error(), "UQ_CompanyID_OwnerID") {
+			helper.HandleUserError(w, "Company already has this owner", 400, err)
+			return nil
+		}
+
+		if strings.Contains(err.Error(), "FK_company_owner_company_owner") {
+			helper.HandleUserError(w, "Company does not exist", 404, err)
+			return nil
+		}
+
+		if strings.Contains(err.Error(), "FK_company_owner_owner") {
+			helper.HandleUserError(w, "Owner does not exist", 404, err)
+			return nil
+		}
+
+		helper.HandleDatabaseError(err)
+	}
+
+	return GetCompanyByID(companyID)
 }
 
 func GetCompanyByID(companyID int) *model.Company {

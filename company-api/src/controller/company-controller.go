@@ -2,10 +2,12 @@ package controller
 
 import (
 	"company-api/src/helper"
+	"company-api/src/model"
 	"company-api/src/repository"
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 )
@@ -13,9 +15,9 @@ import (
 func InitCompanyController(router *mux.Router) {
 	router.HandleFunc("/api/company", getAllCompanies).Methods("GET")
 	router.HandleFunc("/api/company/{id}", getCompanyByID).Methods("GET")
+	router.HandleFunc("/api/company", createCompany).Methods("POST")
 	//router.HandleFunc("/api/company/{id}", updateCompany).Methods("PUT")
-	//router.HandleFunc("/api/company", createCompany).Methods("POST")
-	//router.HandleFunc("/api/company/{companyId}/owner/{ownerId}", addOwnerToCompany).Methods("PUT")
+	router.HandleFunc("/api/company/{companyId}/owner/{ownerId}", addOwnerToCompany).Methods("PUT")
 }
 
 // GET api/company
@@ -45,73 +47,61 @@ func getCompanyByID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(company)
 }
 
-////POST api/company
-//func createCompany(w http.ResponseWriter, r *http.Request) {
-//	reqBody, readErrors := ioutil.ReadAll(r.Body)
-//
-//	if readErrors != nil {
-//		helper.HandleUserError(w, "Error", 400, readErrors)
-//		return
-//	}
-//
-//	var newCompany model.Company
-//
-//	json.Unmarshal(reqBody, &newCompany)
-//
-//	if validationErrors := validate.Struct(newCompany); validationErrors != nil {
-//		helper.HandleUserError(w, "Error", 422, validationErrors)
-//		return
-//	}
-//
-//	if newCompany.Owners != nil {
-//		helper.HandleUserError(w, "Please remove owners", 422, errors.New("owners were added to company"))
-//		return
-//	}
-//
-//	newCompany.ID = repository.GetIdForCompany()
-//	companies = append(companies, newCompany)
-//
-//	w.Header().Set("Content-Type", "application/json")
-//	json.NewEncoder(w).Encode(newCompany)
-//}
+//POST api/company
+func createCompany(w http.ResponseWriter, r *http.Request) {
+	reqBody, readErrors := ioutil.ReadAll(r.Body)
 
-//POST api/company/{id}/owner
-//func addOwnerToCompany(w http.ResponseWriter, r *http.Request) {
-//	companyId, err := strconv.Atoi(mux.Vars(r)["companyId"])
-//
-//	if err != nil {
-//		helper.HandleUserError(w, "Error", 400, err)
-//		return
-//	}
-//
-//	company := helper.GetCompanyById(companyId, &companies)
-//
-//	if company == nil {
-//		helper.HandleUserError(w, "Company was not found", 404, errors.New("no company found"))
-//		return
-//	}
-//
-//	ownerId, err := strconv.Atoi(mux.Vars(r)["companyId"])
-//
-//	if err != nil {
-//		helper.HandleUserError(w, "Error", 400, err)
-//		return
-//	}
-//
-//	owner := helper.GetOwnerById(ownerId, &owners)
-//
-//	if owner == nil {
-//		helper.HandleUserError(w, "Owner was not found", 404, errors.New("no owner found"))
-//		return
-//	}
-//
-//	company.AddOwner(*owner)
-//
-//	repository.UpdateCompany(company)
-//
-//	w.Header().Set("Content-Type", "application/json")
-//	json.NewEncoder(w).Encode(company)
-//}
+	if readErrors != nil {
+		helper.HandleUserError(w, "Error", 400, readErrors)
+		return
+	}
+
+	var newCompany model.Company
+
+	err := json.Unmarshal(reqBody, &newCompany)
+
+	if err != nil {
+		helper.HandleUserError(w, "Error", 422, err)
+		return
+	}
+
+	if validationErrors := validate.Struct(newCompany); validationErrors != nil {
+		helper.HandleUserError(w, "Error", 422, validationErrors)
+		return
+	}
+
+	if newCompany.Owners != nil {
+		helper.HandleUserError(w, "Please remove owners", 422, errors.New("owners were added to company"))
+		return
+	}
+
+	createdCompany := repository.CreateCompany(newCompany)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(createdCompany)
+}
+
+//PUT api/company/{companyID}/owner/{ownerID}
+func addOwnerToCompany(w http.ResponseWriter, r *http.Request) {
+	companyId, err := strconv.Atoi(mux.Vars(r)["companyId"])
+
+	if err != nil {
+		helper.HandleUserError(w, "Error", 500, err)
+		return
+	}
+
+	ownerID, err := strconv.Atoi(mux.Vars(r)["ownerId"])
+
+	if err != nil {
+		helper.HandleUserError(w, "Error", 500, err)
+		return
+	}
+
+	if company := repository.AddOwnerToCompany(companyId, ownerID, w); company != nil {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(company)
+	}
+}
 
 //func updateCompany(w http.ResponseWriter, r *http.Request) {
 //	reqBody, err := ioutil.ReadAll(r.Body)
