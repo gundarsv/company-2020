@@ -35,7 +35,7 @@ WORKDIR /dist
 RUN cp /build/src/application .
 
 # Export necessary port
-EXPOSE 8080
+EXPOSE ${PORT}
 
 # Command to run when starting the container
 CMD ["/dist/application"]
