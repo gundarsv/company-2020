@@ -12,3 +12,4 @@ services:
       DATABASE_IP: ${HOST}
       DATABASE_USER: ${USER}
       DATABASE_PASSWORD: ${PASSWORD}
+      PORT: ${PORT}

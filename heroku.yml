@@ -1,3 +1,3 @@
 build:
   docker:
-    web: company-api/Dockerfile
+    api: company-api/Dockerfile
