@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 
 	router.Use(helper.InitLoggingMiddleware)
 
-	log.Println("Server now listening at :8080")
+	log.Println("Server now listening at :" + os.Getenv("PORT"))
 	repository.InitRepository()
-	log.Fatal(http.ListenAndServe(":8080", helper.RemoveTrailingSlash(router)))
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), helper.RemoveTrailingSlash(router)))
 }
