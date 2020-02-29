@@ -21,6 +21,14 @@ type DatabaseResponse struct {
 	MessageCode int
 }
 
+type ErrorMessage struct {
+	Error string
+}
+
+type SuccessMessage struct {
+	Message string
+}
+
 var (
 	SomethingWentWrongMessage = UserMessage{
 		Message:    "Something went wrong",
@@ -44,7 +52,7 @@ func HandleUserMessage(w http.ResponseWriter, message UserMessage) {
 	w.WriteHeader(message.StatusCode)
 
 	if message.IsError {
-		err := json.NewEncoder(w).Encode(message.Message)
+		err := json.NewEncoder(w).Encode(ErrorMessage{Error: message.Message})
 
 		if err != nil {
 			log.Println(err.Error())
@@ -55,7 +63,7 @@ func HandleUserMessage(w http.ResponseWriter, message UserMessage) {
 	}
 
 	if message.Payload == nil {
-		err := json.NewEncoder(w).Encode(message.Message)
+		err := json.NewEncoder(w).Encode(SuccessMessage{Message: message.Message})
 
 		if err != nil {
 			log.Println(err.Error())

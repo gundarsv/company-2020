@@ -153,5 +153,4 @@ func deleteOwner(w http.ResponseWriter, r *http.Request) {
 		LogMessage: dbResponse.LogMessage,
 	})
 	return
-
 }

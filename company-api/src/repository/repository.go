@@ -8,6 +8,7 @@ import (
 	_ "github.com/denisenkom/go-mssqldb"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -198,10 +199,10 @@ func DeleteCompany(id int) *helper.DatabaseResponse {
 	}
 
 	if number <= 0 {
-		helper.NewDatabaseResponse(true, "No company with id:"+string(id), "No company with id:"+string(id)+" was found", helper.NotFoundDatabaseError)
+		helper.NewDatabaseResponse(true, "No company with id:"+strconv.Itoa(id), "No company with id:"+strconv.Itoa(id)+" was found", helper.NotFoundDatabaseError)
 	}
 
-	return helper.NewDatabaseResponse(false, "Company with id:"+string(id)+" deleted", "Company with id:"+string(id)+" deleted", helper.NoDatabaseError)
+	return helper.NewDatabaseResponse(false, "Company with id:"+strconv.Itoa(id)+" deleted", "Company with id:"+strconv.Itoa(id)+" deleted", helper.NoDatabaseError)
 }
 
 func DeleteOwner(id int) *helper.DatabaseResponse {
@@ -218,10 +219,10 @@ func DeleteOwner(id int) *helper.DatabaseResponse {
 	}
 
 	if number <= 0 {
-		helper.NewDatabaseResponse(true, "No owner with id:"+string(id), "No owner with id:"+string(id)+"was found", helper.NotFoundDatabaseError)
+		helper.NewDatabaseResponse(true, "No owner with id:"+strconv.Itoa(id), "No owner with id:"+strconv.Itoa(id)+"was found", helper.NotFoundDatabaseError)
 	}
 
-	return helper.NewDatabaseResponse(false, "Owner with id:"+string(id)+" deleted", "Owner with id:"+string(id)+" was deleted", helper.NoDatabaseError)
+	return helper.NewDatabaseResponse(false, "Owner with id:"+strconv.Itoa(id)+" deleted", "Owner with id:"+strconv.Itoa(id)+" was deleted", helper.NoDatabaseError)
 }
 
 func DeleteOwnerFromCompany(companyID int, ownerID int) *helper.DatabaseResponse {
