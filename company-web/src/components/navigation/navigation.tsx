@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 
 const Navigation: React.FC = () => {
     const classes = useStyles();
-    const history = useHistory()
+    const history = useHistory();
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
       history.push(newValue);

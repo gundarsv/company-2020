@@ -56,7 +56,7 @@ func GetAllCompanies() (*helper.DatabaseResponse, []*model.Company) {
 
 	for rows.Next() {
 		c := new(model.Company)
-		err := rows.Scan(&c.ID, &c.Name, &c.Address, &c.City, &c.Country, &c.PhoneNumber, &c.Email)
+		err := rows.Scan(&c.ID, &c.Name, &c.Address, &c.City, &c.Country, &c.Email, &c.PhoneNumber)
 
 		if err != nil {
 			return helper.NewDatabaseResponse(true, "No companies found", err.Error(), helper.NotFoundDatabaseError), nil
@@ -314,7 +314,7 @@ func GetCompanyByID(companyID int) (*helper.DatabaseResponse, *model.Company) {
 
 	addOwnersToCompany(company)
 
-	return helper.NewDatabaseResponse(false, "Company returned successfully", "Company returned successfully", helper.RiskDatabaseError), company
+	return helper.NewDatabaseResponse(false, "Company returned successfully", "Company returned successfully", helper.NoDatabaseError), company
 }
 
 func GetOwnerByID(ownerID int) (*helper.DatabaseResponse, *model.Owner) {
