@@ -25,10 +25,7 @@ func main() {
 
 	router.Use(helper.InitLoggingMiddleware)
 
-	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.FileServer(http.Dir("./web/"))
-		http.ServeFile(w, r, "./web/index.html")
-	})
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./web/")))
 
 	log.Println("Server now listening at :" + os.Getenv("PORT"))
 	repository.InitRepository()
