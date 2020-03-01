@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -101,8 +100,6 @@ func createCompany(w http.ResponseWriter, r *http.Request) {
 	}
 
 	dbResponse, createdCompany := repository.CreateCompany(newCompany)
-
-	log.Println(dbResponse.MessageCode)
 
 	helper.HandleUserMessage(w, helper.UserMessage{
 		Message:    dbResponse.Message,
