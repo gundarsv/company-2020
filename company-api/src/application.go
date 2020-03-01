@@ -23,6 +23,8 @@ func main() {
 	controller.InitCompanyController(router)
 	controller.InitOwnerController(router)
 
+	router.NotFoundHandler = http.HandlerFunc(controller.NotFound)
+
 	router.Use(helper.InitLoggingMiddleware)
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./web/")))
