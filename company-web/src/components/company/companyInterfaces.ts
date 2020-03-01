@@ -8,5 +8,5 @@ export interface ICompany {
 	Country: string;
 	Email: string;
 	PhoneNumber: string;
-	Owners: IOwner;
+	Owners: IOwner[];
 }
