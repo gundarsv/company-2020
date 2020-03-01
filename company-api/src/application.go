@@ -4,17 +4,12 @@ import (
 	"company-api/src/controller"
 	"company-api/src/helper"
 	"company-api/src/repository"
-	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"log"
 	"net/http"
 	"os"
 )
-
-func NotFound(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode("Not found test")
-}
 
 func main() {
 
@@ -29,7 +24,8 @@ func main() {
 	controller.InitOwnerController(router)
 
 	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./web/")
+		http.FileServer(http.Dir("./web/"))
+		http.ServeFile(w, r, "./web/index.html")
 	})
 
 	router.Use(helper.InitLoggingMiddleware)
