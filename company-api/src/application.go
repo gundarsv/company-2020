@@ -29,7 +29,7 @@ func main() {
 	controller.InitOwnerController(router)
 
 	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./web/index.html")
+		http.ServeFile(w, r, "./web/")
 	})
 
 	router.Use(helper.InitLoggingMiddleware)
