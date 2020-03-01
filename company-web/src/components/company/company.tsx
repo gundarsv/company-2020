@@ -6,7 +6,6 @@ import {CircularProgress, Dialog, IconButton, Snackbar} from "@material-ui/core"
 import { useSnackbar } from "notistack";
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import OwnerDialog from "../ownerDialog/ownerDialog";
-import Owner from "../owner/owner";
 
 interface CompanyTableState {
 	columns: Array<Column<ICompany>>;
@@ -20,7 +19,7 @@ interface OwnerDialogState {
 
 const Company: React.FC = () => {
 	const { enqueueSnackbar } = useSnackbar();
-	const [ownerDialogState, setOwnerDialogState] = React.useState({
+	const [ownerDialogState, setOwnerDialogState] = React.useState<OwnerDialogState>({
 		company: null,
 		open: false
 	});
