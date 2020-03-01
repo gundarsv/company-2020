@@ -28,13 +28,11 @@ func main() {
 	controller.InitCompanyController(router)
 	controller.InitOwnerController(router)
 
+	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./web/index.html")
+	})
+
 	router.Use(helper.InitLoggingMiddleware)
-
-	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./web/")))
-	router.PathPrefix("/company").Handler(http.FileServer(http.Dir("./web/")))
-	router.PathPrefix("/owner").Handler(http.FileServer(http.Dir("./web/")))
-
-	router.NotFoundHandler = http.HandlerFunc(NotFound)
 
 	log.Println("Server now listening at :" + os.Getenv("PORT"))
 	repository.InitRepository()
