@@ -26,8 +26,6 @@ func main() {
 	router.Use(helper.InitLoggingMiddleware)
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./web/")))
-	router.PathPrefix("/company").Handler(http.FileServer(http.Dir("./web/")))
-	router.PathPrefix("/owner").Handler(http.FileServer(http.Dir("./web/")))
 
 	log.Println("Server now listening at :" + os.Getenv("PORT"))
 	repository.InitRepository()

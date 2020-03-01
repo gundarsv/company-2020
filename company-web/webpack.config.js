@@ -7,14 +7,14 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js"
   },
-  devServer: {
-    historyApiFallback: true,
-    contentBase: "./",
-    hot: true,
-    proxy: {
-      "/api": "http://localhost:8080"
-    }
-  },
+  // devServer: {
+  //   historyApiFallback: true,
+  //   contentBase: "./",
+  //   hot: true,
+  //   proxy: {
+  //     "/api": "http://localhost:8080"
+  //   }
+  // },
   module: {
     rules: [
       {
