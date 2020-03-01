@@ -1,8 +1,8 @@
 version: '3.7'
 
 services:
-  api:
-    build: ./company-api
+  web:
+    build: ./
     network_mode: bridge
     restart: on-failure
     ports:

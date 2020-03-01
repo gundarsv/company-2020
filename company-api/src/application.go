@@ -18,6 +18,8 @@ func main() {
 
 	router.Use(helper.InitLoggingMiddleware)
 
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./web/")))
+
 	log.Println("Server now listening at :" + os.Getenv("PORT"))
 	repository.InitRepository()
 	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), helper.RemoveTrailingSlash(router)))
