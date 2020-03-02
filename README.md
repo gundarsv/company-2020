@@ -1,11 +1,11 @@
 # Company 2020
-Company 2020 is a application made to organize companies and company owners.
+Company 2020 is an application made to organize companies and company owners.
 
 Requirements:
 * [Docker](https://www.docker.com/get-started)
 * [Microsoft SQL Server*]()
 
-To run the application
+To run the application:
 1. Clone the repository
 2. Create a *.env* file in **./company-2020**  for all necessary environment variables**.
 3. Run ```CREATE_DATABASE.sql``` from your MS SQL Server.
@@ -23,7 +23,8 @@ To run the application
 ---
 ### Company WEB
 
-Frontend of the Company 2020 Application where you can manage companies and company owners.
+Frontend of the Company 2020 Application where you can manage companies and company owners.  
+
 Tools used: 
 * React 16.12
 * Typescript 3.7.5
@@ -33,7 +34,7 @@ Tools used:
 ---
 ### Company API
 Backend of the application which connects to the MS SQL Server.
-Company API is written in Go programming language. [Read about Go here](). To connect to MS SQL Server it uses [denisenkom/go-mssqldb](https://github.com/denisenkom/go-mssqldb) driver. For HTTP Routing [gorilla/mux](https://github.com/gorilla/mux)
+Company API is written in Go programming language. [Read about Go here](). To connect to MS SQL Server it uses [denisenkom/go-mssqldb](https://github.com/denisenkom/go-mssqldb) driver. For HTTP Request routing [gorilla/mux](https://github.com/gorilla/mux)
  is used. 
 
 ---
