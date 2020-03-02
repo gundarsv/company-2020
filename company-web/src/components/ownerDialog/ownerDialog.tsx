@@ -183,7 +183,6 @@ const OwnerDialog: React.FC<IOwnerDialogProps> = (props) => {
 						<CircularProgress size={40}/>
 					</div>
 				}
-
 			</DialogContent>
 		</Dialog>
 	)
