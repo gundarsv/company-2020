@@ -6,7 +6,7 @@ services:
     network_mode: bridge
     restart: on-failure
     ports:
-      - '8080:8080'
+      - ${PORT}:${PORT}
     environment:
       DATABASE_DATABASE: ${DATABASE}
       DATABASE_IP: ${HOST}

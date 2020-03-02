@@ -103,7 +103,7 @@ const OwnerDialog: React.FC<IOwnerDialogProps> = (props) => {
 			return;
 		})
 	};
-	
+
 	const addOwnerToCompany = async () => {
 		if (ownerSelected === undefined)
 		{
