@@ -3,7 +3,7 @@ Company 2020 is an application made to organize companies and company owners.
 
 Requirements:
 * [Docker](https://www.docker.com/get-started)
-* [Microsoft SQL Server*]()
+* [Microsoft SQL Server*](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 
 To run the application:
 1. Clone the repository
