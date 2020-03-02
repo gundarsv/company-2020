@@ -79,7 +79,7 @@ const OwnerDialog: React.FC<IOwnerDialogProps> = (props) => {
 			case AddDelete.DeleteOwner:
 				changedDropdown = [...changedDropdown, owner];
 				setDropdownOwners(changedDropdown);
-				changedOwners = changedOwners.splice(changedDropdown.findIndex((o) =>{
+				changedOwners.splice(changedOwners.findIndex((o) =>{
 					return o.ID === owner.ID;
 				}), 1);
 				setCompanyOwners(changedOwners);
