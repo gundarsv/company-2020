@@ -92,4 +92,4 @@ You need to set the **{url}** either to **localhost** if you are running locally
                 
 * Do  ```curl --header "Content-Type: application/json" 
                             --request DELETE
-                            {url}/api/company/{companyId}/owner/{ownerId}``` where *companyId* is the ID of company you want to delete the owner from to and where *ownerId* is the ID of owner you want to delete from the company, to delete owner from company.
+                            {url}/api/company/{companyId}/owner/{ownerId}``` where *companyId* is the ID of company you want to delete the owner from and where *ownerId* is the ID of owner you want to delete from the company, to delete owner from company.
