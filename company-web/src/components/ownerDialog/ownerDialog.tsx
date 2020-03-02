@@ -95,11 +95,11 @@ const OwnerDialog: React.FC<IOwnerDialogProps> = (props) => {
 			if (response.status === 200) {
 				setLoading(true);
 				updateCompanyOwners(owner, AddDelete.DeleteOwner);
-				enqueueSnackbar("Owner was added to company", {variant: "success"});
+				enqueueSnackbar("Owner was removed from company", {variant: "success"});
 				setLoading(false);
 				return;
 			}
-			enqueueSnackbar("Owner was not deleted from company", {variant: "error"});
+			enqueueSnackbar("Owner was not removed from company", {variant: "error"});
 			return;
 		})
 	};
