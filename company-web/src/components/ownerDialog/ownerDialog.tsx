@@ -66,6 +66,11 @@ const OwnerDialog: React.FC<IOwnerDialogProps> = (props) => {
 	const updateCompanyOwners = (owner: IOwner, addDelete: AddDelete) => {
 		let changedDropdown = dropdownOwners;
 		let changedOwners = companyOwners;
+
+		if (changedOwners === null ){
+			changedOwners = [];
+		}
+
 		switch (addDelete) {
 			case AddDelete.AddOwner:
 				changedDropdown.splice(changedDropdown.findIndex((o) =>{
@@ -134,7 +139,7 @@ const OwnerDialog: React.FC<IOwnerDialogProps> = (props) => {
 	return (
 		<Dialog open={props.open} onClose={props.handleClose}>
 			<DialogTitle id="simple-dialog-title">{props.company.Name + " owners"}</DialogTitle>
-			<DialogContent>
+			<DialogContent style={{ minWidth:315 }}>
 				{
 					!loading ? <List dense={false}>
 					{
